@@ -172,9 +172,18 @@ body{
     border-top:4px solid #fbbc05;
 }
 
+
+.std{
+    border-top:4px solid  #1a73e8;
+}
+
+.bsc{
+    border-top:4px solid  #989a9c;
+}
+
 /* Price */
 .price{
-    font-size:34px;
+    font-size:18px;
     font-weight:500;
     margin:10px 0;
 }
@@ -267,7 +276,7 @@ tr:not(:last-child){
 
         <div class="manager-info">
             <div class="manager-label">Current Manager</div>
-            <div class="manager-name">Username</div>
+            <div class="manager-name">WYCLIFFE KIDAH</div>
         </div>
 
         <div class="dropdown" id="dropdownMenu">
@@ -280,7 +289,7 @@ tr:not(:last-child){
 
 <!-- ALERT -->
 <div class="alert" id="alertBox">
-⚠️ Your plan expires in 3 DAYS
+⚠️ Your plan expires in 0 DAYS
 </div>
 
 <!-- MAIN -->
@@ -301,51 +310,94 @@ tr:not(:last-child){
     <div class="content active" id="plans">
         <div class="cards">
 
-            <div class="card">
-                <h3>Starter Plan</h3>
-                <div class="price">$50</div>
-                <small>Lifetime</small>
+            <!-- BASIC PLAN -->
+            <div class="card bsc">
+                <h3>Basic Plan</h3>
+                <div class="price">$232/Yr or $23/Month</div>
+                <small>For Small Institutions</small>
 
                 <ul class="features">
-                    <li>✔ Feature one</li>
-                    <li>✔ Feature two</li>
-                    <li>✔ Feature three</li>
+                    <li>✔ Up to 300 Active Users</li>
+                    <li>✔ 5 GB Secure Cloud Storage</li>
+                    <li>✔ Standard System Access</li>
+                    <li>✔ Monthly Data Backups</li>
+                    <li>✔ Limited Concurrent Access</li>
+                    <li>✔ System Updates Included</li>
+                    <li>✔ Security Patches Included</li>
+                    <li>✔ Email Technical Support</li>
+                    <li>✔ 99% Uptime Guarantee</li>
                 </ul>
 
                 <button class="plan-btn secondary">Current Plan</button>
             </div>
 
-            <div class="card">
-                <h3>Scale Plan</h3>
-                <div class="price">$70</div>
-                <small>Lifetime</small>
+            <!-- STANDARD PLAN -->
+            <div class="card std">
+                <h3>Standard Plan</h3>
+                <div class="price">$580/Yr or $58/Month</div>
+                <small>For Growing Institutions</small>
 
                 <ul class="features">
-                    <li>✔ Feature one</li>
-                    <li>✔ Feature two</li>
-                    <li>✔ Feature three</li>
+                    <li>✔ Up to 1,500 Active Users</li>
+                    <li>✔ 25 GB Secure Cloud Storage</li>
+                    <li>✔ Role-Based Access Control</li>
+                    <li>✔ Daily Automatic Backups</li>
+                    <li>✔ Increased Concurrent Access</li>
+                    <li>✔ Continuous Updates</li>
+                    <li>✔ Security & Performance Patches</li>
+                    <li>✔ Priority Technical Support</li>
+                    <li>✔ 99.5% Uptime Guarantee</li>
                 </ul>
 
                 <button class="plan-btn primary">Upgrade</button>
             </div>
 
+            <!-- PREMIUM PLAN -->
             <div class="card pro">
-                <h3>Pro Plan</h3>
-                <div class="price">$90</div>
-                <small>Lifetime</small>
+                <h3>Premium Plan</h3>
+                <div class="price">$1,160/Yr or $116/Month</div>
+                <small>For Large Institutions</small>
 
                 <ul class="features">
-                    <li>✔ Feature one</li>
-                    <li>✔ Feature two</li>
-                    <li>✔ Feature three</li>
+                    <li>✔ Unlimited Active Users</li>
+                    <li>✔ 100 GB Secure Cloud Storage</li>
+                    <li>✔ Multi-Branch Access</li>
+                    <li>✔ Advanced Permission Management</li>
+                    <li>✔ Unlimited Concurrent Access</li>
+                    <li>✔ Automatic Hourly Backups</li>
+                    <li>✔ Fast-Track Updates & Patches</li>
+                    <li>✔ Advanced Security Monitoring</li>
+                    <li>✔ Dedicated Premium Support</li>
+                    <li>✔ 99.9% Uptime Guarantee</li>
                 </ul>
 
                 <button class="plan-btn gold">Upgrade</button>
             </div>
 
+            <!-- ENTERPRISE PLAN -->
+            <div class="card enterprise">
+                <h3>Enterprise Plan</h3>
+                <div class="price">Custom Pricing</div>
+                <small>For Organizations</small>
+
+                <ul class="features">
+                    <li>✔ Unlimited Users & Branches</li>
+                    <li>✔ Dedicated Cloud Infrastructure</li>
+                    <li>✔ Scalable Storage Capacity</li>
+                    <li>✔ Advanced Access & Audit Controls</li>
+                    <li>✔ Real-Time Backup & Recovery</li>
+                    <li>✔ Dedicated Server Resources</li>
+                    <li>✔ Early Feature Access</li>
+                    <li>✔ Custom Update Scheduling</li>
+                    <li>✔ SLA-Based Uptime Guarantee</li>
+                    <li>✔ 24/7 Dedicated Technical Support</li>
+                </ul>
+
+                <button class="plan-btn dark">Contact Sales</button>
+            </div>
+
         </div>
     </div>
-
     <!-- HISTORY -->
     <div class="content" id="history">
         <table>
@@ -388,24 +440,123 @@ document.querySelectorAll(".tab").forEach(tab=>{
     };
 });
 
-// Payments
-const data=[
-["TXN001","2026-01-01","Starter","$50","Paid"],
-["TXN002","2026-02-10","Scale","$70","Paid"],
-["TXN003","2026-03-15","Pro","$90","Paid"]
+// Payments Data
+const data = [
+    {
+        txn: "QJD7X2L9KP",
+        date: "2023-01-14",
+        plan: "Starter",
+        amount: "KES 6,500",
+        method: "M-Pesa",
+        account: "Paybill • 522533",
+        status: "Paid",
+        receipt: "receipts/QJD7X2L9KP.pdf"
+    },
+    {
+        txn: "NLF3K8WQ2M",
+        date: "2023-05-02",
+        plan: "Scale",
+        amount: "KES 9,100",
+        method: "KCB Bank",
+        account: "KCB Account • 1147852290",
+        status: "Paid",
+        receipt: "receipts/NLF3K8WQ2M.pdf"
+    },
+    {
+        txn: "PXA6V1Z8RT",
+        date: "2023-09-19",
+        plan: "Pro",
+        amount: "KES 11,700",
+        method: "Absa Bank",
+        account: "Absa Account • 5501982734",
+        status: "Paid",
+        receipt: "receipts/PXA6V1Z8RT.pdf"
+    },
+    {
+        txn: "RKT9M4C7YD",
+        date: "2024-01-11",
+        plan: "Starter",
+        amount: "KES 6,500",
+        method: "M-Pesa",
+        account: "Till Number • 839201",
+        status: "Paid",
+        receipt: "receipts/RKT9M4C7YD.pdf"
+    },
+    {
+        txn: "VBN5T8Q2SL",
+        date: "2024-04-28",
+        plan: "Scale",
+        amount: "KES 9,100",
+        method: "KCB Bank",
+        account: "KCB Corporate • 1147852290",
+        status: "Paid",
+        receipt: "receipts/VBN5T8Q2SL.pdf"
+    },
+    {
+        txn: "XCW1P7M4KE",
+        date: "2024-08-16",
+        plan: "Pro",
+        amount: "KES 11,700",
+        method: "Absa Bank",
+        account: "Absa Premium • 5501982734",
+        status: "Paid",
+        receipt: "receipts/XCW1P7M4KE.pdf"
+    },
+    {
+        txn: "ZLM8D3R6YH",
+        date: "2025-01-30",
+        plan: "Starter",
+        amount: "KES 6,500",
+        method: "M-Pesa",
+        account: "Paybill • 522533",
+        status: "Paid",
+        receipt: "receipts/ZLM8D3R6YH.pdf"
+    },
+    {
+        txn: "KQP4X9N2WA",
+        date: "2025-06-09",
+        plan: "Scale",
+        amount: "KES 9,100",
+        method: "KCB Bank",
+        account: "KCB Business • 1147852290",
+        status: "Paid",
+        receipt: "receipts/KQP4X9N2WA.pdf"
+    },
+    {
+        txn: "TYR6B1V8CF",
+        date: "2025-10-21",
+        plan: "Pro",
+        amount: "KES 11,700",
+        method: "Absa Bank",
+        account: "Absa Account • 5501982734",
+        status: "Paid",
+        receipt: "receipts/TYR6B1V8CF.pdf"
+    }
 ];
 
-const body=document.getElementById("paymentBody");
-data.forEach(d=>{
-    body.innerHTML+=`<tr>
-        <td>${d[0]}</td>
-        <td>${d[1]}</td>
-        <td>${d[2]}</td>
-        <td>${d[3]}</td>
-        <td>${d[4]}</td>
+const body = document.getElementById("paymentBody");
+
+data.forEach(d => {
+    body.innerHTML += `
+    <tr>
+        <td>${d.txn}</td>
+        <td>${d.date}</td>
+        <td>${d.plan}</td>
+        <td>${d.amount}</td>
+        <td>${d.method}</td>
+        <td>${d.account}</td>
+        <td>
+            <span class="${d.status === 'Paid' ? 'paid-status' : 'pending-status'}">
+                ${d.status}
+            </span>
+        </td>
+        <td style="text-align:right;">
+            <a href="${d.receipt}" download class="download-btn">
+                Download
+            </a>
+        </td>
     </tr>`;
 });
-
 // Alert
 setTimeout(()=>{
     document.getElementById("alertBox").style.display="block";
