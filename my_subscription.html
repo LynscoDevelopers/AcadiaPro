@@ -294,9 +294,82 @@ tr:not(:last-child){
 
 <!-- ALERT -->
 <div class="alert" id="alertBox">
-⚠️ Your plan expires in 0 DAYS
+    ⚠️ Your plan expires in 0 DAYS
 </div>
 
+<script>
+
+function startCountdown() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const expiryDateString = params.get("expiry");
+
+    if (!expiryDateString) {
+
+        document.getElementById("alertBox").innerHTML =
+            "⚠️ No expiry date provided";
+
+        return;
+    }
+
+    // Fix spaces back to +
+    const fixedDateString = expiryDateString.replace(/ /g, "+");
+
+    const expiryDate = new Date(fixedDateString);
+
+    // Invalid date protection
+    if (isNaN(expiryDate.getTime())) {
+
+        document.getElementById("alertBox").innerHTML =
+            "❌ Invalid expiry date";
+
+        return;
+    }
+
+    function updateCountdown() {
+
+        const now = new Date();
+
+        const difference = expiryDate - now;
+
+        if (difference <= 0) {
+
+            document.getElementById("alertBox").innerHTML =
+                "❌ Your subscription has expired";
+
+            return;
+        }
+
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) /
+            (1000 * 60 * 60)
+        );
+
+        const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) /
+            (1000 * 60)
+        );
+
+        const seconds = Math.floor(
+            (difference % (1000 * 60)) / 1000
+        );
+
+        document.getElementById("alertBox").innerHTML =
+            `⚠️ Your plan expires in
+            ${days}D ${hours}H ${minutes}M ${seconds}S`;
+    }
+
+    updateCountdown();
+
+    setInterval(updateCountdown, 1000);
+}
+
+startCountdown();
+
+</script>
 <!-- MAIN -->
 <div class="wrapper">
 
