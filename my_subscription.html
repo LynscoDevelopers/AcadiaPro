@@ -294,85 +294,53 @@ tr:not(:last-child){
 
 <!-- ALERT -->
 <div class="alert" id="alertBox">
-<<<<<<< HEAD
-    ⚠️ Your plan expires in 0 DAYS
-=======
-⚠️ Your plan expires in 01 DAYS
->>>>>>> d19e93e50e1d23ed7ffc41948e0737c6872dfbb7
+⚠️ Your plan expires in 0 DAYS
 </div>
-
 <script>
+const params = new URLSearchParams(window.location.search);
+let expiryDate = params.get("expiry");
 
-function startCountdown() {
+function normalizeISO(dateStr) {
+    if (!dateStr) return null;
 
-    const params = new URLSearchParams(window.location.search);
+    // Fix microseconds → milliseconds (keep only 3 digits)
+    dateStr = dateStr.replace(/\.(\d{3})\d+/, '.$1');
 
-    const expiryDateString = params.get("expiry");
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
+}
 
-    if (!expiryDateString) {
+const expiry = normalizeISO(expiryDate);
 
-        document.getElementById("alertBox").innerHTML =
-            "⚠️ No expiry date provided";
+const alertBox = document.getElementById("alertBox");
 
-        return;
-    }
-
-    // Fix spaces back to +
-    const fixedDateString = expiryDateString.replace(/ /g, "+");
-
-    const expiryDate = new Date(fixedDateString);
-
-    // Invalid date protection
-    if (isNaN(expiryDate.getTime())) {
-
-        document.getElementById("alertBox").innerHTML =
-            "❌ Invalid expiry date";
-
-        return;
-    }
-
-    function updateCountdown() {
-
+if (!expiry) {
+    alertBox.innerHTML = "⚠️ Invalid expiry date";
+} else {
+    function update() {
         const now = new Date();
+        const diff = expiry - now;
 
-        const difference = expiryDate - now;
-
-        if (difference <= 0) {
-
-            document.getElementById("alertBox").innerHTML =
-                "❌ Your subscription has expired";
-
+        if (diff <= 0) {
+            alertBox.innerHTML = "❌ Your plan has expired";
             return;
         }
 
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
 
-        const hours = Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) /
-            (1000 * 60 * 60)
-        );
-
-        const minutes = Math.floor(
-            (difference % (1000 * 60 * 60)) /
-            (1000 * 60)
-        );
-
-        const seconds = Math.floor(
-            (difference % (1000 * 60)) / 1000
-        );
-
-        document.getElementById("alertBox").innerHTML =
-            `⚠️ Your plan expires in
-            ${days}D ${hours}H ${minutes}M ${seconds}S`;
+        alertBox.innerHTML =
+            `⚠️ Your plan expires in ${days} DAYS `
+            + `${hours} H `
+            + `${minutes} M `
+            + `${seconds} S`;
     }
 
-    updateCountdown();
-
-    setInterval(updateCountdown, 1000);
+    update();
+    setInterval(update, 1000);
 }
-
-startCountdown();
-
 </script>
 <!-- MAIN -->
 <div class="wrapper">
