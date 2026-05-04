@@ -317,7 +317,7 @@ function startCountdown() {
         return;
     }
 
-    // Fix spaces back to +
+    // Fix +03:00 issue
     const fixedDateString = expiryDateString.replace(/ /g, "+");
 
     const expiryDate = new Date(fixedDateString);
@@ -335,40 +335,47 @@ function startCountdown() {
 
         const now = new Date();
 
-        const difference = expiryDate - now;
+        const remainingTime = expiryDate - now;
 
-        if (difference <= 0) {
+        if (remainingTime > 0) {
+
+            // Convert milliseconds
+            const days = Math.floor(
+                remainingTime / (1000 * 60 * 60 * 24)
+            );
+
+            const hours = Math.floor(
+                (remainingTime % (1000 * 60 * 60 * 24)) /
+                (1000 * 60 * 60)
+            );
+
+            const minutes = Math.floor(
+                (remainingTime % (1000 * 60 * 60)) /
+                (1000 * 60)
+            );
+
+            const seconds = Math.floor(
+                (remainingTime % (1000 * 60)) / 1000
+            );
+
+            // SAME FORMAT AS YOUR C# LABEL
+            document.getElementById("alertBox").innerHTML =
+                `⏳ Time Remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        } else {
 
             document.getElementById("alertBox").innerHTML =
-                "❌ Your subscription has expired";
+                "❌ Expired!";
 
-            return;
+            clearInterval(timer);
         }
-
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-
-        const hours = Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) /
-            (1000 * 60 * 60)
-        );
-
-        const minutes = Math.floor(
-            (difference % (1000 * 60 * 60)) /
-            (1000 * 60)
-        );
-
-        const seconds = Math.floor(
-            (difference % (1000 * 60)) / 1000
-        );
-
-        document.getElementById("alertBox").innerHTML =
-            `⚠️ Your plan expires in
-            ${days}D ${hours}H ${minutes}M ${seconds}S`;
     }
 
+    // Run immediately
     updateCountdown();
 
-    setInterval(updateCountdown, 1000);
+    // Update every second
+    const timer = setInterval(updateCountdown, 1000);
 }
 
 startCountdown();
