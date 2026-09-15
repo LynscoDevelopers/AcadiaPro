@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Desktop Application · Single Device</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background: #f1f3f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: white;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      font-size: 18px;
+      color: #5f6368;
+    }
+
+    .logo img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .profile-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      overflow: hidden;
+      cursor: pointer;
+      background: #e8eaed;
+    }
+
+    .profile-btn img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .manager-info {
+      line-height: 1.2;
+    }
+
+    .manager-label {
+      font-size: 11px;
+      color: #5f6368;
+    }
+
+    .manager-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      padding: 8px 0;
+      z-index: 1020;
+    }
+
+    .dropdown button {
+      width: 100%;
+      border: none;
+      background: none;
+      padding: 12px 16px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: #3c4043;
+    }
+
+    .dropdown button:hover {
+      background: #f1f3f4;
+    }
+
+    /* MAIN WRAPPER */
+    .wrapper {
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 0 20px 30px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* TITLE */
+    .title h2 {
+      font-weight: 500;
+      font-size: 28px;
+      color: #202124;
+      margin-bottom: 5px;
+    }
+
+    .title p {
+      color: #5f6368;
+      font-size: 15px;
+    }
+
+    /* DEVICE WARNING BANNER */
+    .device-warning {
+      background: #fce8e6;
+      border-left: 6px solid #d93025;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 24px 0 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .warning-icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .warning-text h3 {
+      font-weight: 700;
+      font-size: 18px;
+      color: #b71c1c;
+      margin-bottom: 6px;
+    }
+
+    .warning-text p {
+      color: #5f6368;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .warning-text strong {
+      color: #d93025;
+      font-weight: 600;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 30px;
+      margin-top: 25px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .tab {
+      padding-bottom: 10px;
+      cursor: pointer;
+      color: #5f6368;
+      font-weight: 500;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    .tab.active {
+      color: #1a73e8;
+      border-bottom: 3px solid #1a73e8;
+    }
+
+    /* CONTENT */
+    .content {
+      display: none;
+    }
+
+    .content.active {
+      display: block;
+    }
+
+    /* CARDS (now for desktop info, not subscription) */
+    .cards {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: 0.3s;
+      border-top: 4px solid #1a73e8;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      font-weight: 500;
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #202124;
+    }
+
+    .card .description {
+      color: #5f6368;
+      font-size: 14px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 15px 0 10px;
+    }
+
+    .feature-list li {
+      padding: 6px 0;
+      color: #3c4043;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      color: #1a73e8;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .card-footer {
+      margin-top: 15px;
+      font-weight: 500;
+      color: #1a73e8;
+      font-size: 14px;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+    }
+
+    th {
+      background: #f8f9fa;
+      color: #5f6368;
+      font-weight: 500;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    tr:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+
+    td {
+      font-size: 14px;
+      color: #3c4043;
+    }
+
+    .paid-status {
+      background: #e6f4ea;
+      color: #137333;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .download-btn {
+      background: #e8eaed;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #1a73e8;
+      font-weight: 500;
+      font-size: 13px;
+      transition: 0.2s;
+      display: inline-block;
+    }
+
+    .download-btn:hover {
+      background: #d2e3fc;
+    }
+
+    /* ALERT (expiration) - we keep minimal but modify message */
+    .alert {
+      position: fixed;
+      top: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d93025;
+      color: white;
+      padding: 16px 35px;
+      font-size: 17px;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      .manager-info {
+        display: none;
+      }
+      .device-warning {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .alert {
+        white-space: normal;
+        width: 90%;
+        text-align: center;
+        font-size: 15px;
+        padding: 14px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <img src="https://www.google.com/favicon.ico" alt="logo">
+    Desktop Application
+  </div>
+
+  <div class="profile-section">
+    <button class="profile-btn" id="profileBtn">
+      <img src="https://i.pravatar.cc/100" alt="profile">
+    </button>
+
+    <div class="manager-info">
+      <div class="manager-label">Current Manager</div>
+      <div class="manager-name">WYCLIFFE KIDAH</div>
+    </div>
+
+    <div class="dropdown" id="dropdownMenu">
+      <button>Change Manager</button>
+      <button>Help</button>
+      <button>About</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT (modified expiration notice) -->
+<div class="alert" id="alertBox">
+  ⚠️ Desktop license verification: 1 day remaining
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="wrapper">
+
+  <div class="title">
+    <h2>Desktop Dashboard</h2>
+    <p>Single‑device installation · local data management</p>
+  </div>
+
+  <!-- CRITICAL DEVICE WARNING -->
+  <div class="device-warning">
+    <span class="warning-icon">🖥️⚠️</span>
+    <div class="warning-text">
+      <h3>Single Device Installation Only</h3>
+      <p>
+        <strong>This application does not support multiple device installations.</strong> 
+        Installing on more than one computer or sharing the license across devices 
+        <strong>may lead to permanent data loss or corruption</strong>. 
+        Your database is tied to this machine. For assistance, contact your administrator.
+      </p>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="desktopInfo">Desktop Info</div>
+    <div class="tab" data-tab="history">Payment History</div>
+  </div>
+
+  <!-- DESKTOP INFO TAB (replaces subscription plans) -->
+  <div class="content active" id="desktopInfo">
+    <div class="cards">
+      <div class="card">
+        <h3>🖥️ Current Installation</h3>
+        <div class="description">
+          This desktop application is licensed to a single device. 
+          Moving or cloning the installation violates the terms and risks database integrity.
+        </div>
+        <ul class="feature-list">
+          <li>Machine ID: DESKTOP-7A3F9B2</li>
+          <li>License type: Perpetual (device-locked)</li>
+          <li>Last sync: Local database only</li>
+        </ul>
+        <div class="card-footer">🔒 Bound to this hardware</div>
+      </div>
+
+      <div class="card">
+        <h3>📋 Data Integrity</h3>
+        <div class="description">
+          All records are stored locally. No cloud duplication is permitted.
+          Multiple installs cause conflicting writes and <strong>data corruption</strong>.
+        </div>
+        <ul class="feature-list">
+          <li>Local backup path: C:\ProgramData\AppBackup</li>
+          <li>Automatic daily backup (local)</li>
+          <li>No external sync enabled</li>
+        </ul>
+        <div class="card-footer">✔ Single source of truth</div>
+      </div>
+
+      <div class="card">
+        <h3>🚫 Multiple Install Warning</h3>
+        <div class="description">
+          Attempting to activate this license on another PC will deactivate 
+          the current instance and may cause irreversible data fragmentation.
+        </div>
+        <ul class="feature-list">
+          <li>Do not copy installation folder</li>
+          <li>Unauthorized VM/clone prohibited</li>
+          <li>Contact support for migration</li>
+        </ul>
+        <div class="card-footer" style="color:#d93025;">⚠ Risk of data loss</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 30px; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+      <h3 style="font-weight: 500; margin-bottom: 10px; color:#202124;">📌 Important Reminder</h3>
+      <p style="color:#5f6368; font-size:15px; line-height:1.6;">
+        This is a <strong>desktop application</strong>, not a web subscription service. 
+        There are no monthly plans or cloud tiers. The software is designed for 
+        <strong>one computer only</strong>. Installing on multiple devices violates the license 
+        agreement and can corrupt your local database beyond recovery.
+      </p>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB (unchanged payment records, but repurposed as license payments) -->
+  <div class="content" id="history">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>License</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Account</th>
+        <th>Status</th>
+        <th style="text-align:right;">Receipt</th>
+      </tr>
+      </thead>
+      <tbody id="paymentBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Dropdown toggle
+  const profileBtn = document.getElementById("profileBtn");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (!profileBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.style.display = "none";
+    }
+  });
+
+  // Tabs functionality
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
+
+      tab.classList.add("active");
+      const targetId = tab.getAttribute("data-tab");
+      document.getElementById(targetId).classList.add("active");
+    });
+  });
+
+  // Payment history data (license payments, not subscription tiers)
+  const paymentData = [
+    {
+      txn: "QJD7X2L9KP",
+      date: "2023-01-14",
+      plan: "Desktop License",
+      amount: "KES 6,500",
+      method: "M-Pesa",
+      account: "Paybill • 522533",
+      status: "Paid",
+      receipt: "receipts/QJD7X2L9KP.pdf"
+    },
+    {
+      txn: "NLF3K8WQ2M",
+      date: "2023-05-02",
+      plan: "Renewal",
+      amount: "KES 9,100",
+      method: "KCB Bank",
+      account: "KCB Account • 1147852290",
+      status: "Paid",
+      receipt: "receipts/NLF3K8WQ2M.pdf"
+    },
+    {
+      txn: "PXA6V1Z8RT",
+      date: "2023-09-19",
+      plan: "Desktop Pro",
+      amount: "KES 11,700",
+      method: "Absa Bank",
+      account: "Absa Account • 5501982734",
+      status: "Paid",
+      receipt: "receipts/PXA6V1Z8RT.pdf"
+    },
+    {
+      txn: "RKT9M4C7YD",
+      date: "2024-01-11",
+      plan: "License Ext",
+      amount: "KES 6,500",
+      method: "M-Pesa",
+      account: "Till Number • 839201",
+      status: "Paid",
+      receipt: "receipts/RKT9M4C7YD.pdf"
+    },
+    {
+      txn: "VBN5T8Q2SL",
+      date: "2024-04-28",
+      plan: "Desktop Renewal",
+      amount: "KES 9,100",
+      method: "KCB Bank",
+      account: "KCB Corporate • 1147852290",
+      status: "Paid",
+      receipt: "receipts/VBN5T8Q2SL.pdf"
+    },
+    {
+      txn: "XCW1P7M4KE",
+      date: "2024-08-16",
+      plan: "Desktop Pro",
+      amount: "KES 11,700",
+      method: "Absa Bank",
+      account: "Absa Premium • 5501982734",
+      status: "Paid",
+      receipt: "receipts/XCW1P7M4KE.pdf"
+    },
+    {
+      txn: "ZLM8D3R6YH",
+      date: "2025-01-30",
+      plan: "License Fee",
+      amount: "KES 6,500",
+      method: "M-Pesa",
+      account: "Paybill • 522533",
+      status: "Paid",
+      receipt: "receipts/ZLM8D3R6YH.pdf"
+    }
+  ];
+
+  const tbody = document.getElementById("paymentBody");
+
+  function renderPayments() {
+    tbody.innerHTML = "";
+    paymentData.forEach(d => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${d.txn}</td>
+        <td>${d.date}</td>
+        <td>${d.plan}</td>
+        <td>${d.amount}</td>
+        <td>${d.method}</td>
+        <td>${d.account}</td>
+        <td><span class="paid-status">${d.status}</span></td>
+        <td style="text-align:right;">
+          <a href="${d.receipt}" download class="download-btn">Download</a>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  renderPayments();
+
+  // Show alert after 30 seconds (modified message)
+  setTimeout(() => {
+    const alertBox = document.getElementById("alertBox");
+    if (alertBox) {
+      alertBox.style.display = "block";
+      // Auto hide after 8 seconds
+      setTimeout(() => {
+        alertBox.style.display = "none";
+      }, 8000);
+    }
+  }, 30000);
+</script>
+
+</body>
+</html>
